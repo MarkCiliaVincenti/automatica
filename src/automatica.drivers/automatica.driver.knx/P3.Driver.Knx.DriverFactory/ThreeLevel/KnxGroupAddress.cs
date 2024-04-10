@@ -143,7 +143,7 @@ namespace P3.Driver.Knx.DriverFactory.ThreeLevel
             }
             catch (FormatException fe)
             {
-                DriverContext.Logger.LogError(fe, $"Could not parse DPT correctly (Target DPT is {dpt.Name} Value is {datagram.Value.Value.ToHex(true)} {fe}");
+                DriverContext.Logger.LogError(fe, $"Could not parse DPT correctly from {datagram.DestinationAddress} (Target DPT is {dpt.Name} Value is {datagram.Value.Value.ToHex(true)} {fe}");
             }
         }
 
