@@ -320,7 +320,6 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
                 DriverContext.Logger.LogInformation($"Dispose KNX driver...");
                 _tunneling.ConnectionStateChanged -= _tunneling_ConnectionStateChanged;
                 _tunneling.GroupMessageReceived -= _tunneling_GroupMessageReceived;
-                await _tunneling.DisposeAsync();
                 DriverContext.Logger.LogInformation($"Dispose KNX driver...done");
             }
             catch (Exception e)

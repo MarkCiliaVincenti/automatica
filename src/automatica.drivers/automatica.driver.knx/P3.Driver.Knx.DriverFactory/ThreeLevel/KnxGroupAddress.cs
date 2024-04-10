@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Automatica.Core.Base.Cryptography;
 using Automatica.Core.Driver;
 using Knx.Falcon;
 using Knx.Falcon.ApplicationData.DatapointTypes;
@@ -131,11 +132,18 @@ namespace P3.Driver.Knx.DriverFactory.ThreeLevel
             }
 
             var dpt = DptFactory.Default.Get(ImplementationDptType, DptSubType);
-            var value = dpt.ToValue(datagram.Value);
-
-            if (ValueRead(value))
+            try
             {
-                DispatchRead(value);
+                var value = dpt.ToValue(datagram.Value);
+
+                if (ValueRead(value))
+                {
+                    DispatchRead(value);
+                }
+            }
+            catch (FormatException fe)
+            {
+                DriverContext.Logger.LogError(fe, $"Could not parse DPT correctly (Target DPT is {dpt.Name} Value is {datagram.Value.Value.ToHex(true)} {fe}");
             }
         }
 
