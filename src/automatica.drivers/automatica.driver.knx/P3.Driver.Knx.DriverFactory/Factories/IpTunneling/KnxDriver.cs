@@ -186,7 +186,7 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
             }
 
             if (e.EventType == GroupEventType.ValueRead)
-            {
+            { 
                 var ga = e.DestinationAddress.ToString()!;
                 DriverContext.Logger.LogDebug($"Datagram on GA {e.EventType} {e.DestinationAddress}");
                 if (_gaMap.TryGetValue(ga, out var groupAddress) && _lastGaValues.TryGetValue(ga, out var gaValue))
@@ -253,19 +253,19 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
                     DriverContext.LicenseContract.IsFeatureLicensed("knx-interface-remote-connection");
                 if (remoteFeatureEnabled && _tunnelingEnabled && await DriverContext.TunnelingProvider.IsAvailableAsync(default))
                 {
-                    string tunnel;
                     if (_secureDriver)
                     {
-                        tunnel = await DriverContext.TunnelingProvider.CreateTunnelAsync(TunnelingProtocol.Tcp, "knx", $"{_remoteIp}", _remotePort,
+                        var tunnel = await DriverContext.TunnelingProvider.CreateTunnelAsync(TunnelingProtocol.TcpAndUdp, "knx", $"{_remoteIp}", _remotePort,
                             token);
+                        DriverContext.Logger.LogInformation($"Tunnel created {tunnel}");
                     }
                     else
                     {
-                        tunnel = await DriverContext.TunnelingProvider.CreateTunnelAsync(TunnelingProtocol.Udp, "knx", $"{_remoteIp}", _remotePort,
+                        var tunnel = await DriverContext.TunnelingProvider.CreateTunnelAsync(TunnelingProtocol.Udp, "knx", $"{_remoteIp}", _remotePort,
                             token);
+                        DriverContext.Logger.LogInformation($"Tunnel created {tunnel}");
                     }
 
-                    DriverContext.Logger.LogInformation($"Tunnel created {tunnel}");
                 }
                 else
                 {

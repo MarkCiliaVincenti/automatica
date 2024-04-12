@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace P3.Driver.Knx.DriverFactory.Logging
 {
-    internal class FalconLoggerFactory : IFalconLoggerFactory
+    public class FalconLoggerFactory : IFalconLoggerFactory
     {
         private readonly ILogger _logger;
 

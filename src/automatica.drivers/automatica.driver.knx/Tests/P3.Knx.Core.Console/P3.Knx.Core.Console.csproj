@@ -10,4 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Knx.Falcon.Sdk" Version="6.1.6264" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\P3.Driver.Knx.DriverFactory\P3.Driver.Knx.DriverFactory.csproj" />
+  </ItemGroup>
 </Project>
