@@ -73,8 +73,249 @@
       "NAME": "Anzahl Vorhersagen",
       "DESCRIPTION": ""
     },
-    "FORECAST": {
-      "NAME": "Vorhersage",
+    "DAILY_FORECAST": {
+      "NAME": "Vorhersage Täglich 8 Tage Durchschnitt",
+      "DESCRIPTION": ""
+    },
+    "MINUTE_FORECAST": {
+      "NAME": "Vorhersage Minütlich",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_1": {
+      "NAME": "Vorhersage Täglich + 1",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_2": {
+      "NAME": "Vorhersage Täglich + 2",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_3": {
+      "NAME": "Vorhersage Täglich + 3",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_4": {
+      "NAME": "Vorhersage Täglich + 4",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_5": {
+      "NAME": "Vorhersage Täglich + 5",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_6": {
+      "NAME": "Vorhersage Täglich + 6",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_7": {
+      "NAME": "Vorhersage Täglich + 7",
+      "DESCRIPTION": ""
+    },
+
+    "HOURLY_FORECAST_0": {
+      "NAME": "Vorhersage Stündlich",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_1": {
+      "NAME": "Vorhersage Stündlich + 01",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_2": {
+      "NAME": "Vorhersage Stündlich + 02",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_3": {
+      "NAME": "Vorhersage Stündlich + 03",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_4": {
+      "NAME": "Vorhersage Stündlich + 04",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_5": {
+      "NAME": "Vorhersage Stündlich + 05",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_6": {
+      "NAME": "Vorhersage Stündlich + 06",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_7": {
+      "NAME": "Vorhersage Stündlich + 07",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_8": {
+      "NAME": "Vorhersage Stündlich + 08",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_9": {
+      "NAME": "Vorhersage Stündlich + 09",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_10": {
+      "NAME": "Vorhersage Stündlich + 10",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_11": {
+      "NAME": "Vorhersage Stündlich + 111",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_12": {
+      "NAME": "Vorhersage Stündlich + 12",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_13": {
+      "NAME": "Vorhersage Stündlich + 13",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_14": {
+      "NAME": "Vorhersage Stündlich + 14",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_15": {
+      "NAME": "Vorhersage Stündlich + 15",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_16": {
+      "NAME": "Vorhersage Stündlich + 16",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_17": {
+      "NAME": "Vorhersage Stündlich + 17",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_18": {
+      "NAME": "Vorhersage Stündlich + 18",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_19": {
+      "NAME": "Vorhersage Stündlich + 19",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_20": {
+      "NAME": "Vorhersage Stündlich + 20",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_21": {
+      "NAME": "Vorhersage Stündlich + 21",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_22": {
+      "NAME": "Vorhersage Stündlich + 22",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_23": {
+      "NAME": "Vorhersage Stündlich + 23",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_24": {
+      "NAME": "Vorhersage Stündlich + 24",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_25": {
+      "NAME": "Vorhersage Stündlich + 25",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_26": {
+      "NAME": "Vorhersage Stündlich + 26",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_27": {
+      "NAME": "Vorhersage Stündlich + 27",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_28": {
+      "NAME": "Vorhersage Stündlich + 28",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_29": {
+      "NAME": "Vorhersage Stündlich + 29",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_30": {
+      "NAME": "Vorhersage Stündlich + 30",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_31": {
+      "NAME": "Vorhersage Stündlich + 31",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_32": {
+      "NAME": "Vorhersage Stündlich + 32",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_33": {
+      "NAME": "Vorhersage Stündlich + 33",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_34": {
+      "NAME": "Vorhersage Stündlich + 34",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_35": {
+      "NAME": "Vorhersage Stündlich + 35",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_36": {
+      "NAME": "Vorhersage Stündlich + 36",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_37": {
+      "NAME": "Vorhersage Stündlich + 37",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_38": {
+      "NAME": "Vorhersage Stündlich + 38",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_39": {
+      "NAME": "Vorhersage Stündlich + 39",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_40": {
+      "NAME": "Vorhersage Stündlich + 40",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_41": {
+      "NAME": "Vorhersage Stündlich + 41",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_42": {
+      "NAME": "Vorhersage Stündlich + 42",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_43": {
+      "NAME": "Vorhersage Stündlich + 43",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_44": {
+      "NAME": "Vorhersage Stündlich + 44",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_45": {
+      "NAME": "Vorhersage Stündlich + 45",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_46": {
+      "NAME": "Vorhersage Stündlich + 46",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_47": {
+      "NAME": "Vorhersage Stündlich + 47",
+      "DESCRIPTION": ""
+    },
+    "TEMPERATURE_PERCEPTION": {
+      "NAME": "Temperatur gefühlt",
+      "DESCRIPTION": ""
+    },
+    "RAIN": {
+      "NAME": "Niederschlag der letzten Stunde",
+      "DESCRIPTION": ""
+    },
+    "SNOW": {
+      "NAME": "Schnee der letzten Stunde",
+      "DESCRIPTION": ""
+    },
+    "UV_INDEX": {
+      "NAME": "UV Index",
       "DESCRIPTION": ""
     }
   }

@@ -73,8 +73,253 @@
       "NAME": "Count forecasts",
       "DESCRIPTION": ""
     },
-    "FORECAST": {
-      "NAME": "Forecast",
+    "DAILY_FORECAST": {
+      "NAME": "Daily forecast",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST": {
+      "NAME": "Hourly forecast",
+      "DESCRIPTION": ""
+    },
+    "MINUTE_FORECAST": {
+      "NAME": "Minute forecast",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_1": {
+      "NAME": "Daily forecast + 1",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_2": {
+      "NAME": "Daily forecast + 2",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_3": {
+      "NAME": "Daily forecast + 3",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_4": {
+      "NAME": "Daily forecast + 4",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_5": {
+      "NAME": "Daily forecast + 5",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_6": {
+      "NAME": "Daily forecast + 6",
+      "DESCRIPTION": ""
+    },
+    "DAILY_FORECAST_7": {
+      "NAME": "Daily forecast + 7",
+      "DESCRIPTION": ""
+    },
+
+    "HOURLY_FORECAST_0": {
+      "NAME": "Hourly forecast",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_1": {
+      "NAME": "Hourly forecast + 01",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_2": {
+      "NAME": "Hourly forecast + 02",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_3": {
+      "NAME": "Hourly forecast + 03",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_4": {
+      "NAME": "Hourly forecast + 04",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_5": {
+      "NAME": "Hourly forecast + 05",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_6": {
+      "NAME": "Hourly forecast + 06",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_7": {
+      "NAME": "Hourly forecast + 07",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_8": {
+      "NAME": "Hourly forecast + 08",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_9": {
+      "NAME": "Hourly forecast + 09",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_10": {
+      "NAME": "Hourly forecast + 10",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_11": {
+      "NAME": "Hourly forecast + 11",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_12": {
+      "NAME": "Hourly forecast + 12",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_13": {
+      "NAME": "Hourly forecast + 13",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_14": {
+      "NAME": "Hourly forecast + 14",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_15": {
+      "NAME": "Hourly forecast + 15",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_16": {
+      "NAME": "Hourly forecast + 16",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_17": {
+      "NAME": "Hourly forecast + 17",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_18": {
+      "NAME": "Hourly forecast + 18",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_19": {
+      "NAME": "Hourly forecast + 19",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_20": {
+      "NAME": "Hourly forecast + 20",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_21": {
+      "NAME": "Hourly forecast + 21",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_22": {
+      "NAME": "Hourly forecast + 22",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_23": {
+      "NAME": "Hourly forecast + 23",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_24": {
+      "NAME": "Hourly forecast + 24",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_25": {
+      "NAME": "Hourly forecast + 25",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_26": {
+      "NAME": "Hourly forecast + 26",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_27": {
+      "NAME": "Hourly forecast + 27",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_28": {
+      "NAME": "Hourly forecast + 28",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_29": {
+      "NAME": "Hourly forecast + 29",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_30": {
+      "NAME": "Hourly forecast + 30",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_31": {
+      "NAME": "Hourly forecast + 31",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_32": {
+      "NAME": "Hourly forecast + 32",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_33": {
+      "NAME": "Hourly forecast + 33",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_34": {
+      "NAME": "Hourly forecast + 34",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_35": {
+      "NAME": "Hourly forecast + 35",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_36": {
+      "NAME": "Hourly forecast + 36",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_37": {
+      "NAME": "Hourly forecast + 37",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_38": {
+      "NAME": "Hourly forecast + 38",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_39": {
+      "NAME": "Hourly forecast + 39",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_40": {
+      "NAME": "Hourly forecast + 40",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_41": {
+      "NAME": "Hourly forecast + 41",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_42": {
+      "NAME": "Hourly forecast + 42",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_43": {
+      "NAME": "Hourly forecast + 43",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_44": {
+      "NAME": "Hourly forecast + 44",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_45": {
+      "NAME": "Hourly forecast + 45",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_46": {
+      "NAME": "Hourly forecast + 46",
+      "DESCRIPTION": ""
+    },
+    "HOURLY_FORECAST_47": {
+      "NAME": "Hourly forecast + 47",
+      "DESCRIPTION": ""
+    },
+    "TEMPERATURE_PERCEPTION": {
+      "NAME": "Temperature perception",
+      "DESCRIPTION": ""
+    },
+    "RAIN": {
+      "NAME": "Rain last hour",
+      "DESCRIPTION": ""
+    },
+    "SNOW": {
+      "NAME": "Snow last hour",
+      "DESCRIPTION": ""
+    },
+    "UV_INDEX": {
+      "NAME": "UV Index",
       "DESCRIPTION": ""
     }
   }

@@ -1,5 +1,4 @@
-﻿using OpenWeatherMap;
-using System;
+﻿using P3.Driver.OpenWeather.Api;
 
 namespace P3.Driver.OpenWeather.Console
 {
@@ -9,19 +8,9 @@ namespace P3.Driver.OpenWeather.Console
         {
             System.Console.WriteLine("Hello World!");
 
-            var client = new OpenWeatherMapClient("SECRET");
+            var client = new WeatherClient("c0c38cdc2ee9822e272fa2c9a25015ef");
 
-            var cords = new Coordinates()
-            {
-                Latitude = 50,
-                Longitude = 40
-            };
-            var x = client.CurrentWeather.GetByCoordinates(cords, MetricSystem.Metric, OpenWeatherMapLanguage.EN);
-            
-            x.ContinueWith(a =>
-            {
-
-            });
+            var x = client.GetOneCall(50, 50, []);
            
             System.Console.ReadLine();
         }

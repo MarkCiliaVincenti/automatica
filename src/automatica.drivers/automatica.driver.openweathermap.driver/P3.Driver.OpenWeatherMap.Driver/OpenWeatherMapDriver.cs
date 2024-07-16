@@ -1,24 +1,28 @@
 ﻿using System;
 using Automatica.Core.Driver;
 using Microsoft.Extensions.Logging;
-using OpenWeatherMap;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Threading;
+using P3.Driver.OpenWeather.Api;
+using P3.Driver.OpenWeather.Api.Enums;
+using P3.Driver.OpenWeather.Api.Models.OneCallModel;
 using Timer = System.Timers.Timer;
-using Newtonsoft.Json.Linq;
+using P3.Driver.OpenWeatherMap.DriverFactory.Forecast;
+using P3.Driver.OpenWeatherMap.DriverFactory.Forecast.Daily;
+using P3.Driver.OpenWeatherMap.DriverFactory.Forecast.Hourly;
 
 namespace P3.Driver.OpenWeatherMap.DriverFactory
 {
     internal class OpenWeatherMapDriver : DriverNoneAttributeBase
     {
         private readonly Timer _timer = new();
-        private Coordinates _cords;
-        private OpenWeatherMapClient _client;
+        private (double Latitude, double Longitude) _coordinates;
+        private WeatherClient _client;
 
-        private readonly List<OpenWeatherMapDriverNode> _nodes = new();
+        private readonly List<OpenWeatherMapDriverBaseNode> _nodes = new();
 
         private readonly ILogger _logger;
         private readonly int _timeZoneOffset = 0;
@@ -57,16 +61,12 @@ namespace P3.Driver.OpenWeatherMap.DriverFactory
             _timer.Elapsed += _timer_Elapsed;
             _timer.Interval = pollTime * 1000;
 
-            _client = new OpenWeatherMapClient(apiKey);
+            _client = new WeatherClient(apiKey);
 
             var latitude = DriverContext.NodeTemplateFactory.GetSetting("Latitude").ValueDouble;
             var longitude = DriverContext.NodeTemplateFactory.GetSetting("Longitude").ValueDouble;
 
-            _cords = new Coordinates
-            {
-                Latitude = latitude!.Value,
-                Longitude = longitude!.Value
-            };
+            _coordinates = (latitude!.Value, longitude!.Value);
 
             _logger.LogInformation($"Using longitude {longitude} latitude {latitude} refresh rate {_timer.Interval}ms");
           
@@ -111,16 +111,29 @@ namespace P3.Driver.OpenWeatherMap.DriverFactory
 
         private async Task ReadValues()
         {
-            var data = await _client.CurrentWeather.GetByCoordinates(_cords, MetricSystem.Metric, OpenWeatherMapLanguage.EN);
+            var oneCallData = await _client.GetOneCallAsync(_coordinates.Latitude, _coordinates.Longitude, [],
+                Measurement.Metric, GetLanguage());
 
-            var forecast = await _client.Forecast.GetByCoordinates(_cords, metric: MetricSystem.Metric, language: OpenWeatherMapLanguage.EN, count: _forecastCount);
-
-            _logger.LogDebug($"Getting data for city {data.City.Country} - {data.City.Name}");
+            _logger.LogDebug($"Getting data for city {oneCallData.TimezoneName}");
 
             foreach (var node in _nodes)
             {
-                var value = node.GetValue(data, forecast);
-                node.DispatchRead(value);
+                var value = node.GetValue(oneCallData);
+                if (value != null)
+                {
+                    node.DispatchRead(value);
+                }
+            }
+        }
+
+        private Language GetLanguage()
+        {
+            switch (DriverContext.LocalizationProvider.GetLocale())
+            {
+                case "de":
+                    return Language.German;
+                default:
+                    return Language.English;
             }
         }
 
@@ -132,138 +145,155 @@ namespace P3.Driver.OpenWeatherMap.DriverFactory
 
         public override IDriverNode CreateDriverNode(IDriverContext ctx)
         {
-            OpenWeatherMapDriverNode node = null;
-            switch(ctx.NodeInstance.This2NodeTemplateNavigation.Key)
+            OpenWeatherMapDriverBaseNode node = null;
+            switch (ctx.NodeInstance.This2NodeTemplateNavigation.Key)
             {
                 case "openweathermap-sunrise":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x,_) => x.City.Sun.Rise.ToLocalTime().AddHours(_timeZoneOffset));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (x) => x.CurrentWeather!.SunriseTime.ToLocalTime().AddHours(_timeZoneOffset));
                     break;
                 }
                 case "openweathermap-sunset":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.City.Sun.Set.ToLocalTime().AddHours(_timeZoneOffset));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (x) => x.CurrentWeather!.SunsetTime.ToLocalTime().AddHours(_timeZoneOffset));
                     break;
                 }
                 case "openweathermap-humidity":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Humidity.Value);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.CurrentWeather!.HumidityPercentage);
                     break;
                 }
                 case "openweathermap-pressure":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Pressure.Value);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.CurrentWeather!.AtmosphericPressure);
                     break;
                 }
                 case "openweathermap-wind-speed":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Wind.Speed.Value);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.CurrentWeather!.WindSpeed);
                     break;
                 }
                 case "openweathermap-wind-direction":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Wind.Direction.Value);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.CurrentWeather!.WindDirection);
                     break;
                 }
                 case "openweathermap-temperature":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Temperature.Value);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.CurrentWeather!.Temperature);
                     break;
                 }
                 case "openweathermap-temperature-max":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Temperature.Max);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.DailyForecasts!.First().Temperature.Maximum);
                     break;
                 }
                 case "openweathermap-temperature-min":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (x, _) => x.Temperature.Min);
+                    node = new OpenWeatherMapDriverNode(ctx, (x) => x.DailyForecasts.First().Temperature.Minimum);
                     break;
                 }
-
                 case "openweathermap-forecast-humidity":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Average(a => a.Humidity.Value), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Average(a => a.HumidityPercentage), 2));
                     break;
                 }
                 case "openweathermap-forecast-pressure":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Average(a => a.Pressure.Value), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Average(a => a.AtmosphericPressure), 2));
                     break;
                 }
                 case "openweathermap-forecast-wind-speed":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Average(a => a.WindSpeed.Mps), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Average(a => a.WindSpeed), 2));
                     break;
                 }
                 case "openweathermap-forecast-wind-direction":
-                    {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Average(a => a.WindSpeed.Mps), 2));
+                {
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Average(a => a.WindDirection), 2));
                     break;
-                    }
+                }
                 case "openweathermap-forecast-temperature":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Average(a => a.Temperature.Value), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Average(a => a.Temperature.Day), 2));
                     break;
                 }
                 case "openweathermap-forecast-temperature-min":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Min(a => a.Temperature.Min), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Min(a => a.Temperature.Minimum), 2));
                     break;
                 }
                 case "openweathermap-forecast-temperature-max":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Max(a => a.Temperature.Max), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Max(a => a.Temperature.Maximum), 2));
                     break;
                 }
                 case "openweathermap-forecast-clouds":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => Math.Round(y.Forecast.Average(a => a.Clouds.All), 2));
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => Math.Round(y.DailyForecasts!.Average(a => a.CloudPercentage), 2));
                     break;
                 }
                 case "openweathermap-forecast-clouds-description":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => y.Forecast.Last().Clouds.Value);
+                    node = new OpenWeatherMapDriverNode(ctx,
+                        (y) => y.DailyForecasts!.Last().Description.First().Description);
                     break;
                 }
                 case "openweathermap-forecast-precipitation":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => y.Forecast.First().Precipitation.Value);
+                    node = new OpenWeatherMapDriverNode(ctx, (y) => y.DailyForecasts!.First().PrecipitationProbability);
                     break;
                 }
                 case "openweathermap-forecast-precipitation-description":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => y.Forecast.First().Precipitation.Type);
+                    node = new OpenWeatherMapDriverNode(ctx, (y) => y.DailyForecasts!.First().Summary);
                     break;
                 }
                 case "openweathermap-forecast-from":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => y.Forecast.First().From);
+                    node = new OpenWeatherMapDriverNode(ctx, (y) => y.DailyForecasts!.First().AnalysisDate);
                     break;
                 }
                 case "openweathermap-forecast-to":
                 {
-                    node = new OpenWeatherMapDriverNode(ctx, (_, y) => y.Forecast.Last().To);
+                    node = new OpenWeatherMapDriverNode(ctx, (y) => y.DailyForecasts!.Last().AnalysisDate);
                     break;
                 }
-
-                case "openweathermap-forecast":
+                case "openweathermap-forecast-average":
                 {
                     return new OpenWeatherMapForecastDriverNode(ctx, this);
                 }
+                case "openweathermap-forecast-daily":
+                {
+                    node = new ForecastDailyNode(ctx);
+                    break;
+                }
+                case "openweathermap-forecast-hourly":
+                {
+                    node = new ForecastHourlyNode(ctx);
+                    break;
+                }
+                //case "openweathermap-forecast-minutely":
+                //{
+                //    return new OpenWeatherMapForecastDriverNode(ctx, this);
+                //}
             }
 
-            if(node != null)
+            if (node != null)
             {
                 _nodes.Add(node);
             }
-
             return node;
-        }
-
-        internal void AddNode(OpenWeatherMapDriverNode node)
-        {
-            _nodes.Add(node);
         }
     }
 }
