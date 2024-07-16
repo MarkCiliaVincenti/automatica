@@ -146,7 +146,7 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
                 useNatValue = useNat != null && useNat.Value;
                 var ip = new IpTunnelingConnectorParameters(ipAddress, ipPort: port, useNat: useNatValue)
                 {
-                    AutoReconnect = false
+                    AutoReconnect = true
                 };
 
                 if (_secureDriver)
@@ -224,25 +224,12 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
 
         }
 
-        private async void _tunneling_ConnectionStateChanged(object sender, EventArgs e)
+        private void _tunneling_ConnectionStateChanged(object sender, EventArgs e)
         {
             DriverContext.Logger.LogError($"Connection state changed to {_tunneling.ConnectionState}");
-            if (_tunneling != null)
-            {
-                var state = _tunneling.ConnectionState == BusConnectionState.Connected;
-                _gwState?.SetGatewayState(state);
 
-                if (!state)
-                {
-                    DriverContext.Logger.LogError($"GW {Name} disconnected, try to reconnect");
-
-                    await DisposeConnection();
-                    await ConstructTunnelingConnection();
-                    await StartConnection();
-
-                    DriverContext.Logger.LogError($"State is now {_tunneling.ConnectionState}");
-                }
-            }
+            var state = _tunneling.ConnectionState == BusConnectionState.Connected;
+            _gwState?.SetGatewayState(state);
         }
 
         private async Task InitRemoteConnect(CancellationToken token = default)
