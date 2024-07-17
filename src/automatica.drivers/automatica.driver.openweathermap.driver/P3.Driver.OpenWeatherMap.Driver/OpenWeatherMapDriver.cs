@@ -8,9 +8,7 @@ using System.Timers;
 using System.Threading;
 using P3.Driver.OpenWeather.Api;
 using P3.Driver.OpenWeather.Api.Enums;
-using P3.Driver.OpenWeather.Api.Models.OneCallModel;
 using Timer = System.Timers.Timer;
-using P3.Driver.OpenWeatherMap.DriverFactory.Forecast;
 using P3.Driver.OpenWeatherMap.DriverFactory.Forecast.Daily;
 using P3.Driver.OpenWeatherMap.DriverFactory.Forecast.Hourly;
 

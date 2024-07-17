@@ -2,7 +2,6 @@
 using Automatica.Core.Driver;
 using Automatica.Core.EF.Models;
 using System;
-using System.Xml.Linq;
 using NodeDataType = Automatica.Core.Base.Templates.NodeDataType;
 
 namespace P3.Driver.OpenWeatherMap.DriverFactory
@@ -13,7 +12,7 @@ namespace P3.Driver.OpenWeatherMap.DriverFactory
 
         public override Guid DriverGuid => new Guid("5330ccc5-42b6-4e7e-9c9a-3f53b54cdbe7");
 
-        public override Version DriverVersion => new Version(2, 0, 0, 1);
+        public override Version DriverVersion => new Version(2, 0, 0, 2);
 
         public override string ImageName => "automaticacore/plugin-p3.driver.open-weather-map";
 
@@ -24,20 +23,14 @@ namespace P3.Driver.OpenWeatherMap.DriverFactory
 
         public static Guid ForecastDaily = new Guid("8b1f50b6-61f6-4be2-87e7-6727900dd752");
         public static Guid ForecastHourly = new Guid("449a967a-da07-46d5-a902-45ed9936c3a8");
-        public static Guid ForecastMinute = new Guid("ced3bdad-c9c6-48e9-8e52-886b7a9f0661");
 
         public static readonly int MaxDailyForecasts = 8;
         public static readonly int MaxHourlyForecasts = 12;
-        public static readonly int MaxMinutelyForecasts = 60;
         public override IDriver CreateDriver(IDriverContext config)
         {
             return new OpenWeatherMapDriver(config);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="factory"></param>9
         public override void InitNodeTemplates(INodeTemplateFactory factory)
         {
             factory.CreateInterfaceType(DriverGuid, "OPENWEATHERMAP.NAME", "OPENWEATHERMAP.DESCRIPTION", int.MaxValue, 1, true);
@@ -124,44 +117,6 @@ namespace P3.Driver.OpenWeatherMap.DriverFactory
             factory.CreateNodeTemplate(new Guid("0e8a2bdd-dfe7-4a1b-a073-00c0e2aff9ee"), "OPENWEATHERMAP.FORECAST_TO.NAME", "OPENWEATHERMAP.FORECAST_TO.DESCRIPTION", "openweathermap-forecast-to", ForecastDailyAverage,
                             GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.DateTime, 1, false);
 
-
-
-
-
-            ////hourly forecasts
-            //factory.CreateInterfaceType(ForecastHourly, "OPENWEATHERMAP.HOURLY_FORECAST.NAME", "OPENWEATHERMAP.HOURLY_FORECAST.DESCRIPTION", int.MaxValue, 1, false);
-            //factory.CreateNodeTemplate(ForecastHourly, "OPENWEATHERMAP.HOURLY_FORECAST.NAME", "OPENWEATHERMAP.HOURLY_FORECAST.DESCRIPTION", "openweathermap-forecast-hourly",
-            //    DriverGuid, ForecastHourly, true, false, true, false, true, NodeDataType.NoAttribute, 1, false);
-
-            //factory.CreateNodeTemplate(new Guid("a7ca37a9-9c45-4d2f-9a8e-b2e0a26ab23f"), "OPENWEATHERMAP.TEMPERATURE.NAME", "OPENWEATHERMAP.TEMPERATURE.DESCRIPTION", "openweathermap-forecast-hourly-temperature", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("133e5a31-3114-4696-a1a5-1d0e758cc8f0"), "OPENWEATHERMAP.TEMPERATURE_PERCEPTION.NAME", "OPENWEATHERMAP.TEMPERATURE_PERCEPTION.DESCRIPTION", "openweathermap-forecast-hourly-temperature-perception", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("8195d908-28e9-46ed-85a4-3b659e218f35"), "OPENWEATHERMAP.PRESSURE.NAME", "OPENWEATHERMAP.PRESSURE.DESCRIPTION", "openweathermap-forecast-hourly-pressure", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("efd2d8a6-852f-41a4-8bf9-ec3116093494"), "OPENWEATHERMAP.HUMIDITY.NAME", "OPENWEATHERMAP.HUMIDITY.DESCRIPTION", "openweathermap-forecast-hourly-humidity", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("2a5e7721-650e-482e-98d2-c6ca4bc2dbb9"), "OPENWEATHERMAP.UV_INDEX.NAME", "OPENWEATHERMAP.UV_INDEX.DESCRIPTION", "openweathermap-forecast-hourly-uv-index", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("716daca7-53db-439b-a513-6c89cb32b7ce"), "OPENWEATHERMAP.CLOUDS.NAME", "OPENWEATHERMAP.CLOUDS.DESCRIPTION", "openweathermap-forecast-hourly-clouds", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("c46d6ece-fd97-4726-8a75-8d63b43e146a"), "OPENWEATHERMAP.WIND_SPEED.NAME", "OPENWEATHERMAP.WIND_SPEED.DESCRIPTION", "openweathermap-forecast-hourly-wind-speed", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("f0a695f2-030d-4b4e-b0b2-697e8adfc14b"), "OPENWEATHERMAP.WIND_DIRECTION.NAME", "OPENWEATHERMAP.WIND_DIRECTION.DESCRIPTION", "openweathermap-forecast-hourly-wind-direction", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("80588b18-0343-44c8-b782-f146baf80b65"), "OPENWEATHERMAP.PRECIPITATION.NAME", "OPENWEATHERMAP.PRECIPITATION.DESCRIPTION", "openweathermap-forecast-hourly-precipitation", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("0c04d651-6ab1-4421-8a31-f9f6d8408e23"), "OPENWEATHERMAP.RAIN.NAME", "OPENWEATHERMAP.TEMPERAINRATURE.DESCRIPTION", "openweathermap-forecast-hourly-rain", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-            //factory.CreateNodeTemplate(new Guid("3fa925f0-ee5a-4d08-9646-dbad7535d10d"), "OPENWEATHERMAP.SNOW.NAME", "OPENWEATHERMAP.SNOW.DESCRIPTION", "openweathermap-forecast-hourly-snow", ForecastHourly,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
-
-            //minutely forecasts
-            //factory.CreateNodeTemplate(ForecastMinute, "OPENWEATHERMAP.HOURLY_FORECAST.NAME", "OPENWEATHERMAP.HOURLY_FORECAST.DESCRIPTION", "openweathermap-forecast-minutely",
-            //    DriverGuid, ForecastMinute, true, false, true, false, true, NodeDataType.NoAttribute, 1, false);
-
-            //factory.CreateNodeTemplate(new Guid("3566c2fb-676a-4d4a-8b51-4a0b2854bdcc"), "OPENWEATHERMAP.PRECIPITATION.NAME", "OPENWEATHERMAP.PRECIPITATION.DESCRIPTION", "openweathermap-forecast-minutely-precipitation", ForecastMinute,
-            //    GuidTemplateTypeAttribute.GetFromEnum(InterfaceTypeEnum.Value), true, true, true, false, true, NodeDataType.Double, 1, false);
 
             CreateDailyForecasts(factory);
             CreateHourlyForecasts(factory);

@@ -1,6 +1,5 @@
 using P3.Driver.OpenWeather.Api.Enums;
 using P3.Driver.OpenWeather.Api.Extensions;
-using P3.Driver.OpenWeather.Api.Models;
 using P3.Driver.OpenWeather.Api.Models.OneCallModel;
 
 namespace P3.Driver.OpenWeather.Api;
