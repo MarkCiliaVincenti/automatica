@@ -224,12 +224,17 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
 
         }
 
-        private void _tunneling_ConnectionStateChanged(object sender, EventArgs e)
+        private async void _tunneling_ConnectionStateChanged(object sender, EventArgs e)
         {
             DriverContext.Logger.LogError($"Connection state changed to {_tunneling.ConnectionState}");
 
             var state = _tunneling.ConnectionState == BusConnectionState.Connected;
             _gwState?.SetGatewayState(state);
+
+            if(_tunneling.ConnectionState == BusConnectionState.Closed)
+            {
+                await StartConnection();
+            }
         }
 
         private async Task InitRemoteConnect(CancellationToken token = default)
