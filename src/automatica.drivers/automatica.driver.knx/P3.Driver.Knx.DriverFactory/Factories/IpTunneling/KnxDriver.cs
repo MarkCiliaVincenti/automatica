@@ -231,7 +231,7 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
             var state = _tunneling.ConnectionState == BusConnectionState.Connected;
             _gwState?.SetGatewayState(state);
 
-            if(_tunneling.ConnectionState == BusConnectionState.Closed)
+            if(_tunneling.ConnectionState == BusConnectionState.Closed || _tunneling.ConnectionState == BusConnectionState.Broken)
             {
                 await StartConnection();
             }
