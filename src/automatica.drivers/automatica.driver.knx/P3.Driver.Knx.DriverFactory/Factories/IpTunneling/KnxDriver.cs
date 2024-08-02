@@ -233,7 +233,7 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
 
             if(_tunneling.ConnectionState == BusConnectionState.Closed || _tunneling.ConnectionState == BusConnectionState.Broken)
             {
-                await StartConnection();
+              //  await StartConnection();
             }
         }
 
