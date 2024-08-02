@@ -167,7 +167,7 @@ namespace P3.Logic.Operations.Shutter
         private IList<ILogicOutputChanged> MoveUp()
         {
             var ret = new List<ILogicOutputChanged>();
-            if (!_moving || _direction != 1)
+            if (!_moving)
             {
                 ret.Add(new LogicOutputChanged(_moveOutput, 0));
                 ret.Add(new LogicOutputChanged(_isMovingOutput, true));
@@ -181,7 +181,7 @@ namespace P3.Logic.Operations.Shutter
         private IList<ILogicOutputChanged> MoveDown()
         {
             var ret = new List<ILogicOutputChanged>();
-            if (!_moving || _direction != 0)
+            if (!_moving)
             {
                 ret.Add(new LogicOutputChanged(_moveOutput, 1));
                 ret.Add(new LogicOutputChanged(_isMovingOutput, true));
