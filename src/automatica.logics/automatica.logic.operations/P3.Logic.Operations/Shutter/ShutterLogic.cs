@@ -142,11 +142,11 @@ namespace P3.Logic.Operations.Shutter
             var moving = false;
             if (Math.Ceiling(dValue) >= 100)
             {
-                moving = false;
+                _moving = false;
             }
             else if (Math.Floor(dValue) <= 0)
             {
-                moving = false;
+                _moving = false;
             }
             else
             {
