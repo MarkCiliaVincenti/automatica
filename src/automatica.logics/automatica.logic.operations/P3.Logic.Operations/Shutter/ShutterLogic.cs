@@ -139,26 +139,28 @@ namespace P3.Logic.Operations.Shutter
 
             var intValue = Convert.ToInt32(dValue);
 
+            var moving = false;
             if (Math.Ceiling(dValue) >= 100)
             {
-                _moving = false;
+                moving = false;
             }
             else if (Math.Floor(dValue) <= 0)
             {
-                _moving = false;
+                moving = false;
             }
             else
             {
-                _moving = true;
+                moving = true;
             }
             
-            ret.Add(new LogicOutputChanged(_isMovingOutput, _moving));
             
             _position = intValue;
             if (setOutput)
             {
+                ret.Add(new LogicOutputChanged(_isMovingOutput, _moving));
                 ret.Add(new LogicOutputChanged(_absolutePositionOutput, dValue));
                 _targetPosition = intValue;
+                _moving = moving;
             }
 
             return ret;
@@ -176,8 +178,8 @@ namespace P3.Logic.Operations.Shutter
             }
             else
             {
-                _moving = false;
                 ret.AddRange(Stop());
+                _moving = false;
             }
 
             _direction = 1;
@@ -195,8 +197,8 @@ namespace P3.Logic.Operations.Shutter
             }
             else
             {
-                _moving = false;
                 ret.AddRange(Stop());
+                _moving = false;
             }
 
             _direction = 0;
