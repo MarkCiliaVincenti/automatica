@@ -46,12 +46,16 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
         private IPAddress _remoteIp;
         private int _remotePort;
         private bool _onlyUseTunnel;
+        private readonly Timer _reconnectTimer;
+        private bool _reconnectTimerStarted;
 
         public KnxDriver(IDriverContext driverContext, bool secureDriver, KnxLevel level=KnxLevel.ThreeLevel) : base(driverContext)
         {
             _secureDriver = secureDriver;
             _level = level;
             Logger.Factory = new FalconLoggerFactory(DriverContext.LoggerFactory.CreateLogger("KNXFalcon"));
+
+            _reconnectTimer = new Timer(DoReconnect, this, Timeout.Infinite, Timeout.Infinite);
         }
 
         protected override bool CreateTelegramMonitor()
@@ -231,9 +235,35 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
             var state = _tunneling.ConnectionState == BusConnectionState.Connected;
             _gwState?.SetGatewayState(state);
 
-            if(_tunneling.ConnectionState == BusConnectionState.Closed || _tunneling.ConnectionState == BusConnectionState.Broken)
+            
+            if(_tunneling.ConnectionState == BusConnectionState.Broken)
+            {
+                if (!_reconnectTimerStarted)
+                {
+                    _reconnectTimerStarted = true;
+                    _reconnectTimer.Change(5000, Timeout.Infinite);
+                }
+            }
+            else if(_tunneling.ConnectionState == BusConnectionState.Closed)
             {
               //  await StartConnection();
+            }
+            else if(_tunneling.ConnectionState == BusConnectionState.Connected)
+            {
+                _reconnectTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
+        }
+
+        private async void DoReconnect(object state)
+        {
+            try
+            {
+                await DisposeConnection();
+                await StartConnection();
+            }
+            finally
+            {
+                _reconnectTimerStarted = false;
             }
         }
 
@@ -312,6 +342,8 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
                 DriverContext.Logger.LogInformation($"Dispose KNX driver...");
                 _tunneling.ConnectionStateChanged -= _tunneling_ConnectionStateChanged;
                 _tunneling.GroupMessageReceived -= _tunneling_GroupMessageReceived;
+                
+                await _tunneling.DisposeAsync();
                 DriverContext.Logger.LogInformation($"Dispose KNX driver...done");
             }
             catch (Exception e)
