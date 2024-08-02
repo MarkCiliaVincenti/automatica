@@ -171,10 +171,16 @@ namespace P3.Logic.Operations.Shutter
             {
                 ret.Add(new LogicOutputChanged(_moveOutput, 0));
                 ret.Add(new LogicOutputChanged(_isMovingOutput, true));
+
+                _moving = true;
+            }
+            else
+            {
+                _moving = false;
+                ret.AddRange(Stop());
             }
 
             _direction = 1;
-            _moving = true;
             return ret;
         }
 
@@ -185,9 +191,14 @@ namespace P3.Logic.Operations.Shutter
             {
                 ret.Add(new LogicOutputChanged(_moveOutput, 1));
                 ret.Add(new LogicOutputChanged(_isMovingOutput, true));
+                _moving = true;
+            }
+            else
+            {
+                _moving = false;
+                ret.AddRange(Stop());
             }
 
-            _moving = true;
             _direction = 0;
             return ret;
         }
