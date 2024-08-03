@@ -11,7 +11,8 @@ using P3.Driver.Knx.DriverFactory.Factories.IpTunneling;
 
 namespace P3.Driver.Knx.DriverFactory.ThreeLevel
 {
-    public abstract class KnxGroupAddress : KnxLevelBase
+    public abstract class KnxGroupAddress(IDriverContext driverContext, KnxDriver knxDriver)
+        : KnxLevelBase(driverContext, knxDriver)
     {
         public string GroupAddress { get; private set; }
         public int DptType { get; private set; }
@@ -22,11 +23,6 @@ namespace P3.Driver.Knx.DriverFactory.ThreeLevel
         public abstract int ImplementationDptType { get; }
 
 
-
-        protected KnxGroupAddress(IDriverContext driverContext, KnxDriver knxDriver) : base(driverContext, knxDriver)
-        {
-
-        }
         protected override Task<bool> StartedInternal(CancellationToken token = new CancellationToken())
         {
             if (ReadableFromBus)
@@ -56,8 +52,6 @@ namespace P3.Driver.Knx.DriverFactory.ThreeLevel
 
             var dptValueProp = GetProperty("knx-dpt");
 
-            
-            
             DptType = ImplementationDptType;
             DptSubType = Convert.ToInt32(dptValueProp.This2PropertyTemplateNavigation.DefaultValue);
             
