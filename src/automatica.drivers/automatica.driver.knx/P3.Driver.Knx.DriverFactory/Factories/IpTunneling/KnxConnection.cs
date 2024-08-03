@@ -61,7 +61,6 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
             _secureSettings = secureSettings;
 
             ConstructTunnelingConnection();
-
         }
 
         private void ConstructTunnelingConnection()
@@ -185,7 +184,6 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
 
         private async void _tunneling_ConnectionStateChanged(object sender, EventArgs e)
         {
-
             _logger.LogError($"Connection state changed to {_tunneling.ConnectionState}");
 
             var state = _tunneling.ConnectionState == BusConnectionState.Connected;
@@ -246,7 +244,6 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
             }
         }
 
-
         private static SecureString PasswordToSecureString(string password)
         {
             var secureString = new SecureString();
@@ -254,7 +251,6 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
             foreach (char c in password)
                 secureString.AppendChar(c);
             return secureString;
-
         }
     }
 }
