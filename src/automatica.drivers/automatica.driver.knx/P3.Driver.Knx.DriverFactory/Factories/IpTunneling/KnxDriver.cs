@@ -116,6 +116,7 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
 
         private KnxConnection CreateConnection()
         {
+            DriverContext.Logger.LogInformation($"Create connection...");
             var ipAddress = GetProperty("knx-ip").ValueString;
             var useNat = GetProperty("knx-use-nat").ValueBool;
             var port = GetPropertyValueInt("knx-port");
@@ -176,8 +177,18 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
                 var currentConnection = _connection;
                 _ = Task.Run(async () =>
                 {
-                    await currentConnection.DisposeConnection();
+                    
+                    try
+                    {
+                        await currentConnection.DisposeConnection();
+                        DriverContext.Logger.LogInformation($"Closed previous connection...");
+                    }
+                    catch (Exception e)
+                    {
+                        DriverContext.Logger.LogError(e, $"Error disposing connection {e}");
+                    }
                 });
+
                 await Task.Delay(2000);
                 _connection = null;
                 var newConnection = CreateConnection();
@@ -236,6 +247,7 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
         {
             try
             {
+                DriverContext.Logger.LogInformation($"Start KNX connection...");
                 await connection.StartConnection(token);
                 DriverContext.Logger.LogInformation($"Start KNX connection...done");
             }
