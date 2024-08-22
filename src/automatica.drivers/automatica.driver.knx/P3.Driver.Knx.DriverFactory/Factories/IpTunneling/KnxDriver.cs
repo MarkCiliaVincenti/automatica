@@ -41,6 +41,8 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
         private bool _onlyUseTunnel;
         private KnxConnection _connection;
 
+        private SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+
         internal ITelegramMonitorInstance InternalTelegramMonitorInstance => TelegramMonitor;
 
         public KnxDriver(IDriverContext driverContext, bool secureDriver, KnxLevel level=KnxLevel.ThreeLevel) : base(driverContext)
@@ -172,28 +174,39 @@ namespace P3.Driver.Knx.DriverFactory.Factories.IpTunneling
 
         internal async Task ConnectionStateChanged(BusConnectionState state)
         {
-            if (state is BusConnectionState.Broken or BusConnectionState.Closed)
+            if (await _semaphore.WaitAsync(5000))
             {
-                var currentConnection = _connection;
-                _ = Task.Run(async () =>
+                try
                 {
-                    
-                    try
+                    DriverContext.Logger.LogInformation($"Try to create a new connection...");
+                    if (state is BusConnectionState.Broken or BusConnectionState.Closed)
                     {
-                        await currentConnection.DisposeConnection();
-                        DriverContext.Logger.LogInformation($"Closed previous connection...");
-                    }
-                    catch (Exception e)
-                    {
-                        DriverContext.Logger.LogError(e, $"Error disposing connection {e}");
-                    }
-                });
+                        var currentConnection = _connection;
+                        _ = Task.Run(async () =>
+                        {
 
-                await Task.Delay(2000);
-                _connection = null;
-                var newConnection = CreateConnection();
-                await StartConnection(newConnection);
-                _connection = newConnection;
+                            try
+                            {
+                                await currentConnection.DisposeConnection();
+                                DriverContext.Logger.LogInformation($"Closed previous connection...");
+                            }
+                            catch (Exception e)
+                            {
+                                DriverContext.Logger.LogError(e, $"Error disposing connection: {e}");
+                            }
+                        });
+
+                        await Task.Delay(2000);
+                        _connection = null;
+                        var newConnection = CreateConnection();
+                        await StartConnection(newConnection);
+                        _connection = newConnection;
+                    }
+                }
+                finally
+                {
+                    _semaphore.Release();
+                }
             }
         }
 
