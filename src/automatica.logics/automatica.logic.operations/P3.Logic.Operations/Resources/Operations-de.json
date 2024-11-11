@@ -6,7 +6,7 @@
       "NAME": "Schalter",
       "DESCRIPTION": "",
       "INPUT": {
-        "NAME": "Status",
+        "NAME": "Eingang",
         "DESCRIPTION": "Eingangswert (Ein/Aus)",
         "VALUE": {
           "NAME": "Status",

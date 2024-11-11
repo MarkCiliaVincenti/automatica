@@ -15,10 +15,12 @@ namespace P3.Driver.Blockchain.Ticker.Driver.Bitcoin
     internal class BitcoinNode : CoinNode
     {
         private readonly List<BitcoinValueNode> _nodes = new List<BitcoinValueNode>();
-        private readonly HttpClient _client = new HttpClient();
+        private readonly HttpClient _client;
 
         public BitcoinNode(IDriverContext driverContext) : base(driverContext)
         {
+            _client = new HttpClient();
+            _client.Timeout = TimeSpan.FromSeconds(5);
         }
 
         protected override async Task<bool> Read(IReadContext readContext, CancellationToken token = new CancellationToken())

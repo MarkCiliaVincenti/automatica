@@ -24,10 +24,12 @@ namespace P3.Driver.Blockchain.Ticker.Driver.Ethereum
     internal class EthereumNode : CoinNode
     {
         private readonly List<EthereumValueNode> _nodes = new();
-        private readonly HttpClient _client = new ();
+        private readonly HttpClient _client;
 
         public EthereumNode(IDriverContext driverContext) : base(driverContext)
         {
+            _client = new HttpClient();
+            _client.Timeout = TimeSpan.FromSeconds(5);
         }
 
         protected override async Task<bool> Read(IReadContext readContext, CancellationToken token = new CancellationToken())

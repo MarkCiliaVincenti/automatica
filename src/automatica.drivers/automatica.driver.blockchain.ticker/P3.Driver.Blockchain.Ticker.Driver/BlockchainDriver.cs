@@ -1,23 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Automatica.Core.Driver;
 using Microsoft.Extensions.Logging;
 using P3.Driver.Blockchain.Ticker.Driver.Bitcoin;
 using P3.Driver.Blockchain.Ticker.Driver.Cardano;
 using P3.Driver.Blockchain.Ticker.Driver.Ethereum;
-using Timer = System.Timers.Timer;
+using Timer = System.Threading.Timer;
 
 namespace P3.Driver.Blockchain.Ticker.Driver
 {
     internal class BlockchainDriver : DriverNoneAttributeBase
     {
-        private Timer _timer = new Timer();
+        private Timer _timer;
       
-        private List<CoinNode> _nodes = new List<CoinNode>();
-
-        private ILogger _logger;
+        private readonly List<CoinNode> _nodes = new List<CoinNode>();
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private readonly ILogger _logger;
+        private int _pollTime;
 
         public BlockchainDriver(IDriverContext driverContext) : base(driverContext)
         {
@@ -27,31 +28,40 @@ namespace P3.Driver.Blockchain.Ticker.Driver
         public override Task<bool> Init(CancellationToken token = default)
         {
             var pollTime = GetPropertyValueInt("poll");
-       
-            _timer.Elapsed += _timer_Elapsed;
-            _timer.Interval = pollTime * 1000;
-
-            _logger.LogInformation($"Start polling every {pollTime}s");
-
-
+            _pollTime = pollTime;
             return base.Init(token);
+        }
+
+        private async void TimeElapsed(object state)
+        {
+            try
+            {
+                if (await _semaphore.WaitAsync(TimeSpan.FromSeconds(1)))
+                {
+                    await ReadValues();
+                }
+            }
+            catch (Exception ex)
+            {
+                DriverContext.Logger.LogError(ex, "Error read values...");
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         public override async Task<bool> Start(CancellationToken token = default)
         {
-            _timer.Start();
+            _timer = new Timer(TimeElapsed, this, _pollTime * 1000, _pollTime * 1000);
 
+            _logger.LogInformation($"Start polling every {_pollTime}s");
             await ReadValues(token);
 
             return await base.Start(token);
         }
 
-        private async void _timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            await ReadValues();
-
-        }
-
+      
         protected override async Task<bool> Read(IReadContext readContext, CancellationToken token = new CancellationToken())
         {
             await ReadValues(token);
@@ -70,8 +80,7 @@ namespace P3.Driver.Blockchain.Ticker.Driver
 
         public override Task<bool> Stop(CancellationToken token = default)
         {
-            _timer.Stop();
-            _timer.Elapsed -= _timer_Elapsed;
+            _timer.Dispose();
             return base.Stop(token);
         }
 

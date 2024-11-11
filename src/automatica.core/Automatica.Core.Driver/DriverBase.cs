@@ -58,24 +58,26 @@ namespace Automatica.Core.Driver
         {
             await Task.CompletedTask;
 
-            _writeQueue.Enqueue((source, value, count));
-            _writeSemaphore.Release(1);
-
             if (_writeQueue.Count > 10)
             {
                 DriverContext.Logger.LogWarning(
-                    $"{FullName} {Id} Enqueue write! WriteQueue has {_writeQueue.Count} elements...");
+                    $"{FullName} {Id} Enqueue write ({value.Value})! WriteQueue has {_writeQueue.Count} elements...");
             }
             else if (_writeQueue.Count > 100)
             {
                 DriverContext.Logger.LogError(
-                    $"{FullName} {Id} Enqueue write! WriteQueue has {_writeQueue.Count} elements...");
+                    $"{FullName} {Id} Enqueue write ({value.Value})! WriteQueue has {_writeQueue.Count} elements...clear queue");
+                _writeQueue.Clear();
             }
             else
             {
                 DriverContext.Logger.LogInformation(
-                    $"{FullName} {Id} Enqueue write! WriteQueue has {_writeQueue.Count} elements...");
+                    $"{FullName} {Id} Enqueue write ({value.Value})! WriteQueue has {_writeQueue.Count} elements...");
             }
+
+            _writeQueue.Enqueue((source, value, count));
+            _writeSemaphore.Release(1);
+
         }
 
         public async Task<bool> Configure(CancellationToken token = default)
@@ -381,7 +383,7 @@ namespace Automatica.Core.Driver
                         }
                         catch (Exception e)
                         {
-                            DriverContext.Logger.LogError(e, $"{FullName} {Id}: Error write value...requeue write task");
+                            DriverContext.Logger.LogError(e, $"{e}: {FullName} {Id}: Error write value...requeue write task");
                             await Enqueue(writeData.Item1, writeData.Item2, writeData.Item3 + 1);
                         }
                     }

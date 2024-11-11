@@ -139,6 +139,7 @@ namespace P3.Logic.Operations.Shutter
 
             var intValue = Convert.ToInt32(dValue);
 
+            var moving = false;
             if (Math.Ceiling(dValue) >= 100)
             {
                 _moving = false;
@@ -149,16 +150,17 @@ namespace P3.Logic.Operations.Shutter
             }
             else
             {
-                _moving = true;
+                moving = true;
             }
             
-            ret.Add(new LogicOutputChanged(_isMovingOutput, _moving));
             
             _position = intValue;
             if (setOutput)
             {
+                ret.Add(new LogicOutputChanged(_isMovingOutput, _moving));
                 ret.Add(new LogicOutputChanged(_absolutePositionOutput, dValue));
                 _targetPosition = intValue;
+                _moving = moving;
             }
 
             return ret;
@@ -167,27 +169,38 @@ namespace P3.Logic.Operations.Shutter
         private IList<ILogicOutputChanged> MoveUp()
         {
             var ret = new List<ILogicOutputChanged>();
-            if (!_moving || _direction != 1)
+            if (!_moving)
             {
                 ret.Add(new LogicOutputChanged(_moveOutput, 0));
                 ret.Add(new LogicOutputChanged(_isMovingOutput, true));
+
+                _moving = true;
+            }
+            else
+            {
+                ret.AddRange(Stop());
+                _moving = false;
             }
 
             _direction = 1;
-            _moving = true;
             return ret;
         }
 
         private IList<ILogicOutputChanged> MoveDown()
         {
             var ret = new List<ILogicOutputChanged>();
-            if (!_moving || _direction != 0)
+            if (!_moving)
             {
                 ret.Add(new LogicOutputChanged(_moveOutput, 1));
                 ret.Add(new LogicOutputChanged(_isMovingOutput, true));
+                _moving = true;
+            }
+            else
+            {
+                ret.AddRange(Stop());
+                _moving = false;
             }
 
-            _moving = true;
             _direction = 0;
             return ret;
         }
